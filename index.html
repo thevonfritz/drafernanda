@@ -49,10 +49,10 @@
         /* ===== EFEITO PASTAS EMPILHADAS ===== */
         .hero               { z-index: 1; }
         .social-proof       { z-index: 2; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
-        .pain-section       { z-index: 3; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
-        .specialist-section { z-index: 4; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
-        .location-section   { z-index: 5; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
-        .form-section       { z-index: 6; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
+        .form-section       { z-index: 3; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
+        .pain-section       { z-index: 4; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
+        .specialist-section { z-index: 5; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
+        .location-section   { z-index: 6; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
         footer              { z-index: 7; border-top-left-radius: 32px; border-top-right-radius: 32px; margin-top: -32px; }
 
         /* ===== TIPOGRAFIA ===== */
@@ -596,40 +596,59 @@
         .form-subtitle {
             color: rgba(250,245,251,0.85);
             text-align: center;
-            font-size: 0.97rem;
+            font-size: 0.9rem;
             max-width: 540px;
-            margin: 0 auto 50px;
-            line-height: 1.7;
+            margin: 0 auto 28px;
+            line-height: 1.6;
         }
 
         .form-card {
             background: #FFFFFF;
-            border-radius: 28px;
-            padding: 54px 50px;
-            max-width: 670px;
+            border-radius: 24px;
+            padding: 36px 40px;
+            max-width: 900px;
             margin: 0 auto;
             box-shadow: 0 32px 80px rgba(0,0,0,0.2);
         }
 
-        .field-group { margin-bottom: 28px; }
+        .form-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 28px;
+            align-items: start;
+        }
+        .field-group--full {
+            grid-column: 1 / -1;
+        }
+        .field-group--full .field-label {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .radio-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .field-group { margin-bottom: 18px; }
 
         .field-label {
             display: block;
-            font-size: 0.76rem;
+            font-size: 0.72rem;
             font-weight: 800;
             color: #8E0D3D;
-            margin-bottom: 10px;
+            margin-bottom: 7px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
         }
 
         .field-input {
             width: 100%;
-            padding: 15px 20px;
+            padding: 11px 16px;
             border: 2px solid #f0e8ee;
-            border-radius: 14px;
+            border-radius: 12px;
             font-family: 'Fauna One', serif;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: #333;
             outline: none;
             transition: border-color 0.25s, box-shadow 0.25s;
@@ -640,17 +659,15 @@
         }
         .field-input::placeholder { color: #bbb; }
 
-        .radio-list { display: flex; flex-direction: column; gap: 10px; }
-
         .radio-opt {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
+            gap: 10px;
+            padding: 10px 14px;
             border: 2px solid #f0e8ee;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.92rem;
+            font-size: 0.85rem;
             color: #444;
             font-weight: 500;
             transition: border-color 0.2s, background 0.2s;
@@ -772,6 +789,8 @@
             .btn { padding: 13px 28px; font-size: 0.74rem; text-align: center; }
             .hero h1 { font-size: 1.35rem; margin-bottom: 14px; }
             .hero p { font-size: 0.85rem; margin-bottom: 30px; }
+            .form-inner { grid-template-columns: 1fr; }
+            .radio-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -858,7 +877,70 @@
 
 
 <!-- ============================================================
-     3. CONSCIENTIZAÇÃO — Agitando a Dor
+     3. FORMULÁRIO
+============================================================ -->
+<section class="form-section" id="formulario">
+    <div class="container">
+
+        <h2 class="section-title">Inicie sua <strong>Transformação</strong></h2>
+        <p class="form-subtitle">Preencha os dados abaixo para que nossa equipe entre em contato e agende sua avaliação com a <strong>Dra. Fernanda</strong>.</p>
+
+        <div class="form-card fade-up">
+            <form id="lead-form" novalidate>
+                <div class="form-inner">
+
+                <div class="field-group">
+                    <label class="field-label" for="nome">Nome Completo</label>
+                    <input class="field-input" type="text" id="nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="whatsapp">WhatsApp (com DDD)</label>
+                    <input class="field-input" type="tel" id="whatsapp" name="whatsapp" placeholder="(17) 99999-9999" autocomplete="tel" required>
+                </div>
+
+                <div class="field-group field-group--full">
+                    <label class="field-label">O que mais incomoda você hoje ao olhar no espelho?</label>
+                    <div class="radio-list">
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="rosto_caido"> Rosto com aspecto caído/murcho</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="rugas"> Rugas e linhas de expressão</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="mandibula"> Perda de contorno da mandíbula</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="olheiras"> Olheiras ou cansaço facial</label>
+                    </div>
+                </div>
+
+                <div class="field-group field-group--full">
+                    <label class="field-label">Você já realizou algum procedimento estético anteriormente?</label>
+                    <div class="radio-list">
+                        <label class="radio-opt"><input type="radio" name="procedimento" value="sim"> Sim, já sou adepto(a)</label>
+                        <label class="radio-opt"><input type="radio" name="procedimento" value="nao"> Não, será minha primeira vez</label>
+                    </div>
+                </div>
+
+                </div><!-- /.form-inner -->
+                <button type="submit" class="btn-submit">ENVIAR E AGENDAR MINHA CONSULTA</button>
+
+            </form>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     PÁGINA DE AGRADECIMENTO (oculta por padrão)
+============================================================ -->
+<div id="thank-you">
+    <div class="ty-box">
+        <div class="ty-icon">✨</div>
+        <h2>Recebemos sua solicitação!</h2>
+        <p>Nossa equipe entrará em contato em breve pelo <strong>WhatsApp</strong> para agendar sua avaliação com a Dra. Fernanda.<br><br>Fique atenta ao seu celular!</p>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     4. CONSCIENTIZAÇÃO — Agitando a Dor
 ============================================================ -->
 <section class="pain-section">
     <div class="container">
@@ -1023,67 +1105,6 @@
 
     </div>
 </section>
-
-
-<!-- ============================================================
-     6. FORMULÁRIO
-============================================================ -->
-<section class="form-section" id="formulario">
-    <div class="container">
-
-        <h2 class="section-title">Inicie sua <strong>Transformação</strong></h2>
-        <p class="form-subtitle">Preencha os dados abaixo para que nossa equipe entre em contato e agende sua avaliação com a <strong>Dra. Fernanda</strong>.</p>
-
-        <div class="form-card fade-up">
-            <form id="lead-form" novalidate>
-
-                <div class="field-group">
-                    <label class="field-label" for="nome">Nome Completo</label>
-                    <input class="field-input" type="text" id="nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required>
-                </div>
-
-                <div class="field-group">
-                    <label class="field-label" for="whatsapp">WhatsApp (com DDD)</label>
-                    <input class="field-input" type="tel" id="whatsapp" name="whatsapp" placeholder="(17) 99999-9999" autocomplete="tel" required>
-                </div>
-
-                <div class="field-group">
-                    <label class="field-label">O que mais incomoda você hoje ao olhar no espelho?</label>
-                    <div class="radio-list">
-                        <label class="radio-opt"><input type="radio" name="incomodo" value="rosto_caido"> Rosto com aspecto caído/murcho</label>
-                        <label class="radio-opt"><input type="radio" name="incomodo" value="rugas"> Rugas e linhas de expressão</label>
-                        <label class="radio-opt"><input type="radio" name="incomodo" value="mandibula"> Perda de contorno da mandíbula</label>
-                        <label class="radio-opt"><input type="radio" name="incomodo" value="olheiras"> Olheiras ou cansaço facial</label>
-                    </div>
-                </div>
-
-                <div class="field-group">
-                    <label class="field-label">Você já realizou algum procedimento estético anteriormente?</label>
-                    <div class="radio-list">
-                        <label class="radio-opt"><input type="radio" name="procedimento" value="sim"> Sim, já sou adepto(a)</label>
-                        <label class="radio-opt"><input type="radio" name="procedimento" value="nao"> Não, será minha primeira vez</label>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">ENVIAR E AGENDAR MINHA CONSULTA</button>
-
-            </form>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- ============================================================
-     PÁGINA DE AGRADECIMENTO (oculta por padrão)
-============================================================ -->
-<div id="thank-you">
-    <div class="ty-box">
-        <div class="ty-icon">✨</div>
-        <h2>Recebemos sua solicitação!</h2>
-        <p>Nossa equipe entrará em contato em breve pelo <strong>WhatsApp</strong> para agendar sua avaliação com a Dra. Fernanda.<br><br>Fique atenta ao seu celular!</p>
-    </div>
-</div>
 
 
 <!-- ============================================================
