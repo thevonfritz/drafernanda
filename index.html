@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dra. Fernanda Fioroto | Harmonização Orofacial em São José do Rio Preto</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Fauna+One&display=swap" rel="stylesheet">
+
+    <!-- Leaflet (mapa estático sem navegação) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        /* ===== RESET ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Fauna One', serif;
+            background: #FFFFFF;
+            color: #2e2e2e;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 72px 24px; }
+        .text-center { text-align: center; }
+
+        /* ===== TIPOGRAFIA ===== */
+        .section-title {
+            font-size: clamp(1.45rem, 3.5vw, 2.3rem);
+            font-weight: 700;
+            color: #8E0D3D;
+            line-height: 1.25;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== BOTÕES ===== */
+        .btn {
+            display: inline-block;
+            padding: 14px 38px;
+            border-radius: 60px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .btn:hover { transform: translateY(-3px); }
+
+        .btn-light {
+            background: #FAF5FB;
+            color: #8E0D3D;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.14);
+        }
+        .btn-light:hover { box-shadow: 0 10px 36px rgba(0,0,0,0.2); background: #fff; }
+
+        .btn-brand {
+            background: #8E0D3D;
+            color: #FAF5FB;
+            box-shadow: 0 4px 24px rgba(142,13,61,0.28);
+        }
+        .btn-brand:hover { background: #a5113f; box-shadow: 0 10px 36px rgba(142,13,61,0.38); }
+
+        /* ===== ANIMAÇÕES ===== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+
+        /* ==================================================
+           1. HERO
+        ================================================== */
+        .hero {
+            background: linear-gradient(145deg, #8E0D3D 0%, #b5194e 45%, #8E0D3D 100%);
+            padding: 110px 24px 90px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero::before {
+            width: 580px; height: 580px;
+            top: -200px; right: -120px;
+            background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+        }
+        .hero::after {
+            width: 400px; height: 400px;
+            bottom: -150px; left: -80px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            color: #FAF5FB;
+            padding: 7px 22px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: 700;
+            color: #FAF5FB;
+            margin-bottom: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero p {
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            color: rgba(250,245,251,0.88);
+            max-width: 600px;
+            margin: 0 0 46px;
+            font-weight: 400;
+        }
+
+
+        /* ==================================================
+           2. PROVA SOCIAL
+        ================================================== */
+        .social-proof { background: #FAF5FB; }
+
+        .ba-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 50px 0 52px;
+        }
+
+        .ba-card {
+            background: #FFFFFF;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 6px 28px rgba(142,13,61,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .ba-card:hover { transform: translateY(-5px); box-shadow: 0 14px 42px rgba(142,13,61,0.13); }
+
+        .ba-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 240px;
+        }
+
+        .ba-side {
+            position: relative;
+            background: linear-gradient(135deg, #f0e3ea, #e4ccda);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ba-side.depois { background: linear-gradient(135deg, #d9b9cc, #c9a3bc); }
+
+        .ba-side img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .ba-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #8E0D3D;
+            opacity: 0.5;
+            padding: 16px;
+            text-align: center;
+        }
+        .ba-placeholder svg { width: 38px; height: 38px; }
+        .ba-placeholder span { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+        .ba-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(142,13,61,0.82);
+            color: #FAF5FB;
+            padding: 3px 14px;
+            border-radius: 30px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .ba-quote {
+            padding: 22px 26px;
+            font-size: 0.88rem;
+            color: #555;
+            font-style: italic;
+            line-height: 1.65;
+        }
+        .ba-quote strong { color: #8E0D3D; font-style: normal; }
+
+
+        /* ==================================================
+           3. CONSCIENTIZAÇÃO (DOR)
+        ================================================== */
+        .pain-section { background: #FFFFFF; }
+
+        .pain-intro {
+            font-size: 1.05rem;
+            color: #444;
+            max-width: 700px;
+            margin: 0 auto 52px;
+            text-align: center;
+            line-height: 1.85;
+        }
+
+        .checklist {
+            max-width: 650px;
+            margin: 0 auto 54px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 18px 24px;
+            background: #FAF5FB;
+            border-radius: 16px;
+            border-left: 5px solid #8E0D3D;
+        }
+
+        .check-icon {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            background: #8E0D3D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .check-icon svg {
+            width: 14px; height: 14px;
+            fill: none; stroke: #FAF5FB;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .check-text {
+            font-size: 0.97rem;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+
+        /* ==================================================
+           4. ESPECIALISTA
+        ================================================== */
+        .specialist-section {
+            background: linear-gradient(160deg, #FAF5FB 0%, #ffffff 100%);
+        }
+
+        .specialist-grid {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 72px;
+            align-items: center;
+        }
+
+        .specialist-photo {
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 28px 72px rgba(142,13,61,0.13);
+            aspect-ratio: 3/4;
+            background: linear-gradient(155deg, #f2e7ed 0%, #e8d5de 50%, #d9bfce 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .specialist-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .photo-holder {
+            text-align: center;
+            color: #8E0D3D;
+            opacity: 0.45;
+            padding: 24px;
+        }
+        .photo-holder svg { width: 72px; height: 72px; margin-bottom: 14px; }
+        .photo-holder p { font-size: 0.85rem; font-weight: 600; }
+
+        .specialist-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #8E0D3D;
+            color: #FAF5FB;
+            padding: 7px 20px;
+            border-radius: 60px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .specialist-name {
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700;
+            color: #8E0D3D;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .specialist-subtitle {
+            font-size: 0.98rem;
+            color: #666;
+            font-style: italic;
+            font-weight: 400;
+            margin-bottom: 28px;
+        }
+
+        .specialist-quote {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #8E0D3D;
+            font-style: italic;
+            padding: 14px 20px 14px 24px;
+            border-left: 5px solid #8E0D3D;
+            background: rgba(142,13,61,0.04);
+            border-radius: 0 14px 14px 0;
+            margin-bottom: 26px;
+        }
+
+        .specialist-bio {
+            font-size: 0.97rem;
+            color: #444;
+            line-height: 1.85;
+            margin-bottom: 34px;
+        }
+
+        .highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-bottom: 38px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 2px 14px rgba(142,13,61,0.07);
+        }
+
+        .highlight-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            background: linear-gradient(135deg, #8E0D3D, #c0204e);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .highlight-icon svg { width: 22px; height: 22px; fill: #FAF5FB; }
+
+        .highlight-text strong {
+            display: block;
+            color: #8E0D3D;
+            font-size: 0.93rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .highlight-text span { color: #666; font-size: 0.86rem; }
+
+
+        /* ==================================================
+           5. LOCALIZAÇÃO & FAQ
+        ================================================== */
+        .location-section { background: #FAF5FB; }
+
+        .map-wrap {
+            position: relative;
+            border-radius: 22px;
+            overflow: hidden;
+            height: 420px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 40px rgba(142,13,61,0.1);
+        }
+
+        #map { width: 100%; height: 100%; }
+
+        /* Overlay que bloqueia TODA interação com o mapa */
+        .map-block {
+            position: absolute;
+            inset: 0;
+            z-index: 999;
+            cursor: default;
+            user-select: none;
+        }
+
+        .address-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #FFFFFF;
+            border-radius: 18px;
+            padding: 22px 28px;
+            margin-bottom: 64px;
+            box-shadow: 0 3px 18px rgba(142,13,61,0.07);
+        }
+
+        .address-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: linear-gradient(135deg, #8E0D3D, #c0204e);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .address-icon svg { width: 26px; height: 26px; fill: #FAF5FB; }
+
+        .address-info strong {
+            display: block;
+            color: #8E0D3D;
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .address-info span { color: #666; font-size: 0.88rem; }
+
+        /* FAQ */
+        .faq-heading {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #8E0D3D;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .faq-list { max-width: 840px; margin: 0 auto; }
+
+        .faq-item {
+            background: #FFFFFF;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 14px rgba(142,13,61,0.06);
+            overflow: hidden;
+        }
+
+        .faq-btn {
+            width: 100%;
+            text-align: left;
+            padding: 22px 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: #8E0D3D;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+        .faq-btn:hover { background: rgba(142,13,61,0.03); }
+
+        .faq-arrow {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 50%;
+            background: rgba(142,13,61,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.35s;
+        }
+        .faq-arrow svg {
+            width: 14px; height: 14px;
+            stroke: #8E0D3D; fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s;
+        }
+
+        .faq-item.open .faq-arrow { background: #8E0D3D; transform: rotate(180deg); }
+        .faq-item.open .faq-arrow svg { stroke: #FAF5FB; }
+
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .faq-item.open .faq-body { max-height: 280px; }
+
+        .faq-body p {
+            padding: 0 28px 24px;
+            font-size: 0.94rem;
+            color: #555;
+            line-height: 1.78;
+        }
+
+
+        /* ==================================================
+           6. FORMULÁRIO
+        ================================================== */
+        .form-section {
+            background: linear-gradient(145deg, #8E0D3D 0%, #b5194e 50%, #8E0D3D 100%);
+        }
+
+        .form-section .section-title { color: #FAF5FB; text-align: center; }
+
+        .form-subtitle {
+            color: rgba(250,245,251,0.85);
+            text-align: center;
+            font-size: 0.97rem;
+            max-width: 540px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+        }
+
+        .form-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 54px 50px;
+            max-width: 670px;
+            margin: 0 auto;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+        }
+
+        .field-group { margin-bottom: 28px; }
+
+        .field-label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #8E0D3D;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #f0e8ee;
+            border-radius: 14px;
+            font-family: 'Fauna One', serif;
+            font-size: 0.95rem;
+            color: #333;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .field-input:focus {
+            border-color: #8E0D3D;
+            box-shadow: 0 0 0 3px rgba(142,13,61,0.09);
+        }
+        .field-input::placeholder { color: #bbb; }
+
+        .radio-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .radio-opt {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 2px solid #f0e8ee;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            color: #444;
+            font-weight: 500;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .radio-opt:hover { border-color: #8E0D3D; background: rgba(250,245,251,0.6); }
+        .radio-opt:has(input:checked) { border-color: #8E0D3D; background: rgba(142,13,61,0.04); }
+        .radio-opt input[type="radio"] { accent-color: #8E0D3D; width: 18px; height: 18px; min-width: 18px; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 21px;
+            background: linear-gradient(135deg, #8E0D3D, #c0204e);
+            color: #FAF5FB;
+            border: none;
+            border-radius: 60px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 6px 26px rgba(142,13,61,0.3);
+            margin-top: 8px;
+        }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(142,13,61,0.4); }
+
+
+        /* ==================================================
+           PÁGINA DE AGRADECIMENTO (oculta por padrão)
+        ================================================== */
+        #thank-you {
+            display: none;
+            background: linear-gradient(145deg, #8E0D3D 0%, #b5194e 100%);
+            padding: 130px 24px;
+            text-align: center;
+        }
+
+        .ty-box {
+            background: rgba(255,255,255,0.12);
+            border-radius: 28px;
+            padding: 64px 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(8px);
+        }
+        .ty-box .ty-icon { font-size: 3.5rem; margin-bottom: 22px; }
+        .ty-box h2 { color: #FAF5FB; font-size: 2.1rem; font-weight: 900; margin-bottom: 18px; }
+        .ty-box p { color: rgba(250,245,251,0.88); font-size: 1.02rem; line-height: 1.78; }
+        .ty-box strong { color: #FAF5FB; }
+
+
+        /* ==================================================
+           7. RODAPÉ
+        ================================================== */
+        footer {
+            background: #1a1a1a;
+            padding: 72px 24px 42px;
+            text-align: center;
+        }
+
+        .footer-phrase {
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            color: rgba(250,245,251,0.88);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+        .footer-phrase strong { color: #FAF5FB; font-weight: 900; }
+
+        footer .btn-brand { margin-top: 28px; }
+
+        .footer-copy {
+            margin-top: 52px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            font-size: 0.77rem;
+            color: rgba(250,245,251,0.3);
+            line-height: 1.7;
+        }
+
+
+        /* ==================================================
+           RESPONSIVO
+        ================================================== */
+        @media (max-width: 860px) {
+            .specialist-grid { grid-template-columns: 1fr; gap: 44px; }
+            .specialist-photo { max-height: 380px; }
+        }
+        @media (max-width: 640px) {
+            section { padding: 54px 20px; }
+            .hero { padding: 72px 20px 64px; }
+            .form-card { padding: 32px 22px; }
+            .address-card { flex-direction: column; text-align: center; }
+            .ba-grid { grid-template-columns: 1fr; }
+            .btn { padding: 13px 28px; font-size: 0.74rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     1. HERO
+============================================================ -->
+<section class="hero">
+    <div class="hero-inner">
+        <span class="hero-pill">✦ Harmonização Orofacial ✦</span>
+
+        <h1>Seu corpo mudou, sua <strong>autoestima</strong> também merece evoluir.</h1>
+
+        <p>Recupere a firmeza e o contorno facial que o emagrecimento levou. <strong>Harmonização Orofacial</strong> com foco em <strong>naturalidade extrema</strong> para quem não abre mão da sua identidade.</p>
+
+        <a href="#formulario" class="btn btn-light">QUERO MINHA AVALIAÇÃO PERSONALIZADA</a>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     2. PROVA SOCIAL — Antes e Depois
+============================================================ -->
+<section class="social-proof">
+    <div class="container">
+
+        <div class="text-center fade-up">
+            <h2 class="section-title">Histórias de <strong>Transformação</strong> e Autoestima.</h2>
+        </div>
+
+        <div class="ba-grid">
+
+            <!-- Substituir .ba-placeholder por <img src="..."> quando houver fotos reais -->
+
+            <div class="ba-card fade-up">
+                <div class="ba-images">
+                    <div class="ba-side">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Antes</span>
+                        </div>
+                        <span class="ba-label">ANTES</span>
+                    </div>
+                    <div class="ba-side depois">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Depois</span>
+                        </div>
+                        <span class="ba-label">DEPOIS</span>
+                    </div>
+                </div>
+                <div class="ba-quote">"Me sinto <strong>completamente renovada</strong>. Meu rosto voltou a combinar com minha energia."</div>
+            </div>
+
+            <div class="ba-card fade-up" style="transition-delay:.1s">
+                <div class="ba-images">
+                    <div class="ba-side">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Antes</span>
+                        </div>
+                        <span class="ba-label">ANTES</span>
+                    </div>
+                    <div class="ba-side depois">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Depois</span>
+                        </div>
+                        <span class="ba-label">DEPOIS</span>
+                    </div>
+                </div>
+                <div class="ba-quote">"Perdi 18 kg e o rosto parecia <strong>murcho</strong>. Hoje eu me reconheço no espelho de novo."</div>
+            </div>
+
+            <div class="ba-card fade-up" style="transition-delay:.2s">
+                <div class="ba-images">
+                    <div class="ba-side">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Antes</span>
+                        </div>
+                        <span class="ba-label">ANTES</span>
+                    </div>
+                    <div class="ba-side depois">
+                        <div class="ba-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Foto Depois</span>
+                        </div>
+                        <span class="ba-label">DEPOIS</span>
+                    </div>
+                </div>
+                <div class="ba-quote">"<strong>Natural, sutil e transformador</strong>. Exatamente o que eu precisava."</div>
+            </div>
+
+        </div>
+
+        <div class="text-center fade-up">
+            <a href="#formulario" class="btn btn-brand">QUERO SER A PRÓXIMA TRANSFORMADA</a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     3. CONSCIENTIZAÇÃO — Agitando a Dor
+============================================================ -->
+<section class="pain-section">
+    <div class="container">
+
+        <div class="text-center fade-up">
+            <h2 class="section-title">O corpo está em forma, mas o rosto parece <em>"derretido"</em>?</h2>
+        </div>
+
+        <p class="pain-intro fade-up">
+            É o <strong>paradoxo do emagrecimento</strong>: a gordura que você perdeu no corpo também saiu do rosto. O resultado é a perda de sustentação, o surgimento do <strong>"bigode chinês"</strong> e aquele aspecto de <strong>cansaço constante</strong>.
+        </p>
+
+        <div class="checklist fade-up">
+            <div class="check-item">
+                <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></div>
+                <span class="check-text">Sente o rosto <strong>"murcho" ou sem vida</strong> no espelho?</span>
+            </div>
+            <div class="check-item">
+                <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></div>
+                <span class="check-text">A <strong>linha da mandíbula</strong> perdeu a definição?</span>
+            </div>
+            <div class="check-item">
+                <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></div>
+                <span class="check-text">O <strong>olhar parece triste</strong>, mesmo quando você está feliz?</span>
+            </div>
+            <div class="check-item">
+                <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></div>
+                <span class="check-text">Tem <strong>medo de procedimentos exagerados</strong> e artificiais?</span>
+            </div>
+        </div>
+
+        <div class="text-center fade-up">
+            <a href="#formulario" class="btn btn-brand">QUERO MINHA AVALIAÇÃO PERSONALIZADA</a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     4. A ESPECIALISTA — Autoridade & Nicho
+============================================================ -->
+<section class="specialist-section">
+    <div class="container">
+        <div class="specialist-grid">
+
+            <!-- Foto: substitua o .photo-holder por <img src="foto.jpg" alt="Dra. Fernanda Fioroto"> -->
+            <div class="specialist-photo fade-up">
+                <div class="photo-holder">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                    <p>Foto da Dra. Fernanda Fioroto</p>
+                </div>
+            </div>
+
+            <div class="fade-up" style="transition-delay:.15s">
+                <span class="specialist-badge">✦ A Especialista</span>
+                <h2 class="specialist-name">Dra. Fernanda Fioroto</h2>
+                <p class="specialist-subtitle">A especialista em gerenciar o envelhecimento de quem vive em movimento.</p>
+
+                <div class="specialist-quote">"É você, na sua melhor versão."</div>
+
+                <p class="specialist-bio">
+                    Dra. Fernanda Fioroto entende que o rosto de quem <strong>treina e se cuida</strong> exige protocolos diferenciados. Sua metodologia exclusiva foca em <strong>devolver a estrutura perdida</strong>, sem transformar seus traços.
+                </p>
+
+                <div class="highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <div class="highlight-text">
+                            <strong>Foco em Bioestimuladores</strong>
+                            <span>Sustentação real, não apenas preenchimento.</span>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" fill="none" stroke="#FAF5FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div class="highlight-text">
+                            <strong>Protocolos exclusivos para atletas</strong>
+                            <span>Para quem pratica atividades de alto impacto.</span>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </div>
+                        <div class="highlight-text">
+                            <strong>Atendimento humanizado</strong>
+                            <span>Em São José do Rio Preto.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#formulario" class="btn btn-brand">QUERO MINHA AVALIAÇÃO PERSONALIZADA</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     5. LOCALIZAÇÃO & FAQ
+============================================================ -->
+<section class="location-section">
+    <div class="container">
+
+        <div class="text-center fade-up">
+            <h2 class="section-title">Experiência Premium no <strong>Coração de São José do Rio Preto</strong>.</h2>
+        </div>
+
+        <!-- MAPA ESTÁTICO — nenhum link sai da página -->
+        <div class="map-wrap fade-up">
+            <div id="map"></div>
+            <div class="map-block" aria-hidden="true"></div>
+        </div>
+
+        <!-- Endereço -->
+        <div class="address-card fade-up">
+            <div class="address-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div class="address-info">
+                <strong>Navarro Building — São José do Rio Preto / SP</strong>
+                <span>Atendimento com hora marcada · Clínica especializada em harmonização orofacial</span>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <h3 class="faq-heading fade-up">Perguntas Frequentes</h3>
+
+        <div class="faq-list">
+
+            <div class="faq-item fade-up">
+                <button class="faq-btn" onclick="toggleFAQ(this)" type="button">
+                    <span>Vou ficar com o rosto artificial?</span>
+                    <div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </button>
+                <div class="faq-body">
+                    <p>De forma alguma. Nosso foco é o <strong>refinamento</strong>. O objetivo é que as pessoas notem que você está melhor, <strong>sem saber o que você fez</strong>.</p>
+                </div>
+            </div>
+
+            <div class="faq-item fade-up" style="transition-delay:.06s">
+                <button class="faq-btn" onclick="toggleFAQ(this)" type="button">
+                    <span>Como conciliar com minha rotina de treinos?</span>
+                    <div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </button>
+                <div class="faq-body">
+                    <p>Planejamos seu <strong>cronograma de tratamento</strong> junto com sua agenda de performance para o <strong>mínimo de downtime possível</strong>.</p>
+                </div>
+            </div>
+
+            <div class="faq-item fade-up" style="transition-delay:.12s">
+                <button class="faq-btn" onclick="toggleFAQ(this)" type="button">
+                    <span>Dói?</span>
+                    <div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </button>
+                <div class="faq-body">
+                    <p>Utilizamos <strong>protocolos de conforto e anestesia local</strong>. Sua jornada será tão tranquila quanto o seu resultado.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     6. FORMULÁRIO
+============================================================ -->
+<section class="form-section" id="formulario">
+    <div class="container">
+
+        <h2 class="section-title">Inicie sua <strong>Transformação</strong></h2>
+        <p class="form-subtitle">Preencha os dados abaixo para que nossa equipe entre em contato e agende sua avaliação com a <strong>Dra. Fernanda</strong>.</p>
+
+        <div class="form-card fade-up">
+            <form id="lead-form" novalidate>
+
+                <div class="field-group">
+                    <label class="field-label" for="nome">Nome Completo</label>
+                    <input class="field-input" type="text" id="nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="whatsapp">WhatsApp (com DDD)</label>
+                    <input class="field-input" type="tel" id="whatsapp" name="whatsapp" placeholder="(17) 99999-9999" autocomplete="tel" required>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">O que mais incomoda você hoje ao olhar no espelho?</label>
+                    <div class="radio-list">
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="rosto_caido"> Rosto com aspecto caído/murcho</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="rugas"> Rugas e linhas de expressão</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="mandibula"> Perda de contorno da mandíbula</label>
+                        <label class="radio-opt"><input type="radio" name="incomodo" value="olheiras"> Olheiras ou cansaço facial</label>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Você já realizou algum procedimento estético anteriormente?</label>
+                    <div class="radio-list">
+                        <label class="radio-opt"><input type="radio" name="procedimento" value="sim"> Sim, já sou adepto(a)</label>
+                        <label class="radio-opt"><input type="radio" name="procedimento" value="nao"> Não, será minha primeira vez</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">ENVIAR E AGENDAR MINHA CONSULTA</button>
+
+            </form>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     PÁGINA DE AGRADECIMENTO (oculta por padrão)
+============================================================ -->
+<div id="thank-you">
+    <div class="ty-box">
+        <div class="ty-icon">✨</div>
+        <h2>Recebemos sua solicitação!</h2>
+        <p>Nossa equipe entrará em contato em breve pelo <strong>WhatsApp</strong> para agendar sua avaliação com a Dra. Fernanda.<br><br>Fique atenta ao seu celular!</p>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     7. RODAPÉ
+============================================================ -->
+<footer>
+    <div class="container">
+        <p class="footer-phrase">Recupere a confiança de <strong>olhar no espelho</strong>.<br>Você merece esse cuidado.</p>
+        <a href="#formulario" class="btn btn-brand">QUERO MINHA AVALIAÇÃO PERSONALIZADA</a>
+        <p class="footer-copy">
+            © 2025 Dra. Fernanda Fioroto — Harmonização Orofacial · São José do Rio Preto / SP<br>
+            Todos os direitos reservados.
+        </p>
+    </div>
+</footer>
+
+
+<script>
+    /* ================================================
+       MAPA ESTÁTICO — Navarro Building, SJRP
+       Atualizar coordenadas se necessário
+    ================================================ */
+    (function initMap() {
+        // Coordenadas aproximadas do centro comercial de São José do Rio Preto
+        // Ajuste para o endereço exato do Navarro Building
+        const lat = -20.8178;
+        const lng = -49.3800;
+
+        const map = L.map('map', {
+            center: [lat, lng],
+            zoom: 16,
+            dragging:          false,
+            touchZoom:         false,
+            scrollWheelZoom:   false,
+            doubleClickZoom:   false,
+            boxZoom:           false,
+            keyboard:          false,
+            zoomControl:       false,
+            attributionControl: false,
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        const markerHtml = `<div style="
+            width:40px;height:40px;
+            background:#8E0D3D;
+            border-radius:50% 50% 50% 0;
+            transform:rotate(-45deg);
+            border:4px solid #FAF5FB;
+            box-shadow:0 4px 16px rgba(142,13,61,.45);
+        "></div>`;
+
+        const icon = L.divIcon({
+            className: '',
+            html: markerHtml,
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+        });
+
+        L.marker([lat, lng], { icon, interactive: false })
+            .addTo(map)
+            .bindPopup(
+                '<strong style="color:#8E0D3D;font-family:Cinzel,serif">Navarro Building</strong>' +
+                '<br><span style="font-size:.85rem;color:#555">São José do Rio Preto — SP</span>',
+                { closeButton: false, autoClose: false, closeOnClick: false }
+            )
+            .openPopup();
+    })();
+
+
+    /* ================================================
+       SCROLL ANIMATIONS
+    ================================================ */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+
+    /* ================================================
+       SMOOTH SCROLL
+    ================================================ */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+    });
+
+
+    /* ================================================
+       FAQ ACCORDION
+    ================================================ */
+    function toggleFAQ(btn) {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+    }
+
+
+    /* ================================================
+       MÁSCARA WHATSAPP
+    ================================================ */
+    document.getElementById('whatsapp').addEventListener('input', function () {
+        let v = this.value.replace(/\D/g, '').slice(0, 11);
+        if (v.length > 2)  v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+        if (v.length > 10) v = v.slice(0, 10) + '-' + v.slice(10);
+        this.value = v;
+    });
+
+
+    /* ================================================
+       ENVIO DO FORMULÁRIO
+    ================================================ */
+    document.getElementById('lead-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const nome        = document.getElementById('nome').value.trim();
+        const whatsapp    = document.getElementById('whatsapp').value.trim();
+        const incomodo    = document.querySelector('input[name="incomodo"]:checked');
+        const procedimento = document.querySelector('input[name="procedimento"]:checked');
+
+        if (!nome || !whatsapp || !incomodo || !procedimento) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        document.getElementById('formulario').style.display = 'none';
+        const ty = document.getElementById('thank-you');
+        ty.style.display = 'block';
+        ty.scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
